@@ -19,7 +19,10 @@ module.exports = (robot) ->
     for row, i in fetches
       do (row, i) ->
         fetch_count = 0
-        request = Request row.url
+        request = Request
+          url: row.url
+          headers:
+            'User-Agent': 'Opera/9.80 (Windows NT 5.1; U; ja) Presto/2.7.62 Version/11.01'
         request.on 'error', (err) ->
           console.log "Error fetch url: #{err}"
         request.on 'response', (res) ->
