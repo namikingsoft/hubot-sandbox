@@ -23,22 +23,21 @@ module.exports = (robot) ->
         request.on 'error', (err) ->
           console.log "Error fetch url: #{err}"
         request.on 'response', (res) ->
-          stream = @
-          if res.statusCode != 200
-            return this.emit 'error', new Error('Bad status code')
-          stream.pipe feedparser
+          #if res.statusCode != 200
+          #  return this.emit 'error', new Error('Bad status code')
+          console.log JSON.stringify res, null, ' '
+          @pipe feedparser
         feedparser = new FeedParser
         feedparser.on 'error', (err) ->
           console.log "Error fetch url: #{err}"
         feedparser.on 'readable', ->
-          while (item = @read()) and fetch_count < MAX_FETCH_COUNT
+          while (item = @read()) and fetch_count++ < MAX_FETCH_COUNT
             feed = @meta.title
             title = item.title
             link = item.link
             continue if _.find row.shown_list, (x) -> x is link
             message = "#{title}\n#{feed}\n#{link}"
             message_queue.push message
-            fetch_count++
             # add link on shown list
             row.shown_list.push link
             row.shown_list.shift() while row.shown_list.length > 5
