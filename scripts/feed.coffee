@@ -48,6 +48,7 @@ module.exports = (robot) ->
   robot.brain.on 'loaded', ->
     robot.brain.data.fetches ||= []
     setInterval send, 1000 * 5
+    setInterval fetch, 1000 * 60
 
   robot.respond /feed fetch/i, -> fetch()
 
