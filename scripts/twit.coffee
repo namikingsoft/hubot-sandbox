@@ -46,13 +46,13 @@ module.exports = (robot) ->
     setInterval search_and_queue, 1000 * 30
     setInterval send, 1000 * 5
 
-  robot.respond /twitter fetch/i, -> search_and_send()
+  robot.respond /twit fetch/i, -> search_and_send()
 
-  robot.respond /twitter reset/i, (res) ->
+  robot.respond /twit reset/i, (res) ->
     robot.brain.data.searches = []
     res.reply "OK. Search list was cleared"
 
-  robot.respond /twitter add ([a-zA-Z0-9_]+) (.*)/i, (res) ->
+  robot.respond /twit add ([a-zA-Z0-9_]+) (.*)/i, (res) ->
     name = res.match[1]
     text = res.match[2]
     robot.brain.data.searches.push
@@ -61,13 +61,13 @@ module.exports = (robot) ->
       since_id: 1
     res.reply "Added: #{name} -> #{text}"
 
-  robot.respond /twitter rm ([a-zA-Z0-9_]+)/i, (res) ->
+  robot.respond /twit rm ([a-zA-Z0-9_]+)/i, (res) ->
     name = res.match[1]
     robot.brain.data.searches = robot.brain.data.searches.filter (search) ->
       search.name != name
     res.reply "Removed: #{name}"
 
-  robot.respond /twitter list/i, (res) ->
+  robot.respond /twit list/i, (res) ->
     res.reply "\n" + JSON.stringify(robot.brain.data.searches, null, '  ')
 
 
