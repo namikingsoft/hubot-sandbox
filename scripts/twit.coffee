@@ -1,12 +1,12 @@
 Twit = require "twit"
 
-MENTION_ROOM = process.env.TWITTER_MENTION_ROOM || "#general"
+MENTION_ROOM = process.env.TWIT_MENTION_ROOM || "#general"
 MAX_FETCH_COUNT = 5
 CONFIG =
-  consumer_key: process.env.TWITTER_CONSUMER_KEY
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET
-  access_token: process.env.TWITTER_ACCESS_TOKEN_KEY
-  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+  consumer_key: process.env.TWIT_CONSUMER_KEY
+  consumer_secret: process.env.TWIT_CONSUMER_SECRET
+  access_token: process.env.TWIT_ACCESS_TOKEN_KEY
+  access_token_secret: process.env.TWIT_ACCESS_TOKEN_SECRET
 
 module.exports = (robot) ->
 
