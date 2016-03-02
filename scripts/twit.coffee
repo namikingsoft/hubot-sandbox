@@ -19,8 +19,8 @@ module.exports = (robot) ->
 
   search_and_queue = ->
     twit = new Twit CONFIG
-    searches = robot.brain.data.searches
-    for search, i in searches
+    search_list = robot.brain.data.search_list
+    for search, i in search_list
       do (search, i) ->
         param =
           q: search.text
@@ -33,29 +33,29 @@ module.exports = (robot) ->
           return unless data.statuses?
           return unless data.statuses.length > 0
           search.since_id = data.statuses[0].id_str
-          robot.brain.data.searches[i] = search
+          robot.brain.data.search_list[i] = search
           for tweet in data.statuses.reverse()
             user = tweet.user
-            text = "@#{user.screen_name}さん、#{search.name}についてのツイート。"
+            text = "#{tweet.text} - #{user.name}@#{user.screen_name}"
             url = "http://twitter.com/#{user.screen_name}/status/#{tweet.id_str}"
             message = "#{text}\n#{url}"
             message_queue.push message
 
   robot.brain.on 'loaded', ->
-    robot.brain.data.searches ||= []
+    robot.brain.data.search_list ||= []
     setInterval search_and_queue, 1000 * 30
-    setInterval send, 1000 * 5
+    setInterval send, 1000 * 10
 
   robot.respond /twit fetch/i, -> search_and_send()
 
   robot.respond /twit reset/i, (res) ->
-    robot.brain.data.searches = []
+    robot.brain.data.search_list = []
     res.reply "OK. Search list was cleared"
 
   robot.respond /twit add ([a-zA-Z0-9_]+) (.*)/i, (res) ->
     name = res.match[1]
     text = res.match[2]
-    robot.brain.data.searches.push
+    robot.brain.data.search_list.push
       name: name
       text: text
       since_id: 1
@@ -63,11 +63,11 @@ module.exports = (robot) ->
 
   robot.respond /twit rm ([a-zA-Z0-9_]+)/i, (res) ->
     name = res.match[1]
-    robot.brain.data.searches = robot.brain.data.searches.filter (search) ->
+    robot.brain.data.search_list = robot.brain.data.search_list.filter (search) ->
       search.name != name
     res.reply "Removed: #{name}"
 
   robot.respond /twit list/i, (res) ->
-    res.reply "\n" + JSON.stringify(robot.brain.data.searches, null, '  ')
+    res.reply "\n" + JSON.stringify(robot.brain.data.search_list, null, '  ')
 
 
