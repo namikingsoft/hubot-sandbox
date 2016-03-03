@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "outDir": "scripts"
+  },
+  "files": [
+    "node_modules/immutable/dist/immutable.d.ts",
+    "typings/main.d.ts",
+    "src/index.ts"
+  ]
+}

@@ -1,3 +1,5 @@
+/scripts
+/typings
 /node_modules
 /npm-debug.log
 /.hubot_history
