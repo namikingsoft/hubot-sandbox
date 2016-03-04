@@ -4,11 +4,11 @@
 DEPLOY_BRANCH="deploy$(date '+%Y%m%d%H%M%S')"
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref @)
 
-# make deploy branch
-git checkout -b ${DEPLOY_BRANCH}
-
 # build
 npm run build
+
+# make deploy branch
+git checkout -b ${DEPLOY_BRANCH}
 
 # add working and built files
 git add -A
