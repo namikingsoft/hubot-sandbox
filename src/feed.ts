@@ -1,5 +1,6 @@
 import {Robot, Response} from 'hubot'
 import Config from './config/Feed'
+import * as _ from 'lodash'
 
 const Request = require('request')
 const FeedParser = require('feedparser')
@@ -42,7 +43,8 @@ export = (robot: Robot<BrainData>) => {
         },
       })
       request.on('error', (err: Error) => {
-        console.log(`Error fetch url: ${err}`)
+        console.log(`Request Error fetch url: ${err}`)
+        console.log(err.stack)
       })
       request.on('response', function(res: any) {
         const stream: any = this
@@ -54,7 +56,8 @@ export = (robot: Robot<BrainData>) => {
       let fetchCount = 0
       const feedparser = new FeedParser
       feedparser.on('error', (err: Error) => {
-        console.log(`Error fetch url: ${err}`)
+        console.log(`Parse Error fetch url: ${err}`)
+        console.log(err.stack)
       })
       feedparser.on('readable', function() {
         const stream: any = this
@@ -63,7 +66,7 @@ export = (robot: Robot<BrainData>) => {
         while (item = stream.read()) {
           const title = item.title
           const link = item.link
-          if (shownList.filter(x => x === link)) {
+          if (_.find(shownList, x => x === link)) {
             shownList = shownList.filter(x => x !== link)
             shownList.push(link)
             continue
@@ -90,7 +93,7 @@ export = (robot: Robot<BrainData>) => {
     if (!robot.brain.data.feedList) {
       robot.brain.data.feedList = []
     }
-    if (robot.brain.data.feedShownList) {
+    if (!robot.brain.data.feedShownList) {
       robot.brain.data.feedShownList = []
     }
     setInterval(send, 1000 * 10)
@@ -101,7 +104,8 @@ export = (robot: Robot<BrainData>) => {
 
   robot.respond(/feed reset/i, res => {
     robot.brain.data.feedList = []
-    res.reply('OK. Search list was cleared')
+    robot.brain.data.feedShownList = []
+    res.reply('OK. Feed list was cleared')
   })
 
   robot.respond(/feed add ([a-zA-Z0-9_]+) (.*)/i, res => {

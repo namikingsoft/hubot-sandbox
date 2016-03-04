@@ -8,7 +8,6 @@
     "outDir": "scripts"
   },
   "files": [
-    "node_modules/immutable/dist/immutable.d.ts",
     "typings/main.d.ts",
     "src/hubot.d.ts",
     "src/index.ts"
