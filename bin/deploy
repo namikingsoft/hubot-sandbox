@@ -1,0 +1,30 @@
+#!/bin/bash -e
+
+# variable
+DEPLOY_BRANCH="deploy$(date '+%Y%m%d%H%M%S')"
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref @)
+
+# make deploy branch
+git checkout -b ${DEPLOY_BRANCH}
+
+# build
+npm run build
+
+# add working and built files
+git add -A
+git add -f scripts
+
+# commit and deploy
+git commit -m "Deploying to Heroku"
+git push heroku -f ${DEPLOY_BRANCH}:master
+
+# reset temp commit
+git reset --soft HEAD~
+git reset .
+
+# back to current branch
+git checkout ${CURRENT_BRANCH}
+
+# remove temp branch
+git branch -D ${DEPLOY_BRANCH}
+

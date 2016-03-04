@@ -5,9 +5,10 @@
   "author": "",
   "description": "",
   "scripts": {
-    "postinstall": "typings install && npm run build",
     "build": "npm run build:tsc",
-    "build:tsc": "tsc"
+    "build:tsc": "tsc",
+    "build:pre": "typings install",
+    "deploy": "bin/deploy"
   },
   "dependencies": {
     "feedparser": "^1.1.4",
