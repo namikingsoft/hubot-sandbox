@@ -2,6 +2,10 @@ import {Robot, Response} from 'hubot'
 import Config from './config/Twit'
 const Twitter = require("twitter") // @todo d.ts
 
+interface FetchData {
+  statuses: Array<Tweet>
+}
+
 interface Tweet {
   id_str: number
   text: string
@@ -41,9 +45,11 @@ export = (robot: Robot<BrainData>) => {
         count: Config.MAX_FETCH_COUNT,
         since_id: search.sinceId,
       }
-      client.get('search/tweets', param, (err: Error, tweets: Array<Tweet>) => {
+      client.get('search/tweets', param, (err: Error, data: FetchData) => {
+        const tweets = data.statuses
         if (err) {
-          console.log(`Error getting tweets: ${err}`)
+          const message = JSON.stringify(err, null, '  ')
+          console.log(`Error getting tweets: ${message}`)
           return
         }
         if (tweets.length === 0) {
@@ -53,7 +59,7 @@ export = (robot: Robot<BrainData>) => {
         robot.brain.data.searchList[index] = search
         tweets.reverse().forEach(tweet => {
           const user = tweet.user
-          const text = `#{tweet.text} - ${user.name}@${user.screen_name}`
+          const text = `${tweet.text} - ${user.name}@${user.screen_name}`
           const url = `http://twitter.com/${user.screen_name}/status/${tweet.id_str}`
           const message = `${text}\n${url}`
           queue.push(message)
