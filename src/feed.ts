@@ -20,7 +20,7 @@ interface BrainData {
   feedShownList: Array<string>
 }
 
-export = (robot: Robot<BrainData>) => {
+module.exports = (robot: Robot<BrainData>) => {
 
   const queue: Array<string> = []
 

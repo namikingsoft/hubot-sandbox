@@ -25,7 +25,7 @@ interface BrainData {
   searchList: Array<Search>
 }
 
-export = (robot: Robot<BrainData>) => {
+module.exports = (robot: Robot<BrainData>) => {
 
   const queue: Array<string> = []
 

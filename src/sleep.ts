@@ -1,7 +1,7 @@
 import {Robot, Response} from 'hubot'
 import Config from './config/Sleep'
 
-export = (robot: Robot<any>) => {
+module.exports = (robot: Robot<any>) => {
 
   // when wakeup
   const timerId = setInterval(() => {
