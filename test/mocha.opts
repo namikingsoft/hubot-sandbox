@@ -1,0 +1,2 @@
+--compilers ts:espower-typescript-babel/guess
+--require coffee-script/register
