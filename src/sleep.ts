@@ -11,9 +11,15 @@ module.exports = (robot: Robot<any>) => {
     }
   }, 1000)
 
-  // when sleep
-  process.on('SIGTERM', () => {
+  // when sleep @todo messy
+  const onSigTerm = () => {
     robot.messageRoom(Config.MENTION_ROOM, 'おやすみ。')
     setTimeout(process.exit, 1000)
-  })
+  }
+  const processAny: any = process
+  if (processAny._events.SIGTERM) {
+    processAny._events.SIGTERM = onSigTerm
+  } else {
+    process.on('SIGTERM', onSigTerm)
+  }
 }
