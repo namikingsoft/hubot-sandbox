@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "sourceMap": true,
+    "sourceMap": false,
     "noImplicitAny": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "outDir": "build"
   },
-  "files": [
-    "typings/main.d.ts",
-    "src/hubot.d.ts",
-    "src/index.ts"
+  "exclude": [
+    "node_modules",
+    "typings",
+    "test"
   ]
 }
