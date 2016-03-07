@@ -39,6 +39,8 @@ module.exports = (robot: Robot<any>) => {
         }
       })
       stream.on('error', (err: Error) => {
+        console.log('Twitter Streaming API Error:')
+        console.log(err)
         setTimeout(15000, fetch)
       })
     })
