@@ -1,6 +1,6 @@
 export default class TwitConfig {
 
-  static MENTION_ROOM = process.env.TWIT_MENTION_ROOM || "#general"
+  static MENTION_ROOM = process.env.TWIT_MENTION_ROOM || "#twitter"
   static MAX_FETCH_COUNT = 5
   static API_KEYS = {
     consumer_key: process.env.TWIT_CONSUMER_KEY,
