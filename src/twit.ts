@@ -26,7 +26,7 @@ module.exports = (robot: Robot<any>) => {
   const fetch = () => {
     const client = new Twitter(Config.API_KEYS)
     const option = {
-      track: 'docker,react,redux,electron,typescript,javascript,css',
+      track: 'docker,react,redux,electron,typescript,javascript,css,node',
     }
     client.stream('statuses/filter', option, (stream: any) => {
       stream.on('data', (tweet: Tweet) => {
