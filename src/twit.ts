@@ -2,12 +2,20 @@ import {Robot, Response} from 'hubot'
 import Config from './config/Twit'
 const Twitter = require("twitter") // @todo d.ts
 
+interface Url {
+  url: string
+  display_url: string
+}
+
 interface Tweet {
   id_str: number
   text: string
   user: {
     name: string
     screen_name: string
+  }
+  entities: {
+    urls: Array<Url>
   }
   lang: string
 }
@@ -35,9 +43,11 @@ module.exports = (robot: Robot<any>) => {
           const text = `${tweet.text} - ${user.name}@${user.screen_name}`
           const url = `http://twitter.com/${user.screen_name}/status/${tweet.id_str}`
           const message = `${text}\n${url}`
-          if (/相互フォロー/.test(user.name)) {
-            // filter @todo bombing error by node
-            return
+          // filter @todo bombing error by node
+          for (const url of tweet.entities.urls) {
+            if (/node/.test(url.display_url)) {
+              return
+            }
           }
           queue.push(message)
         }
