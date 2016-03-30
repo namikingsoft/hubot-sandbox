@@ -26,7 +26,7 @@ module.exports = (robot: Robot<any>) => {
   const fetch = () => {
     const client = new Twitter(Config.API_KEYS)
     const option = {
-      track: 'docker,react,redux,electron,typescript,javascript,css,node',
+      track: 'docker,react,electron,typescript,javascript,css,node,npm',
     }
     client.stream('statuses/filter', option, (stream: any) => {
       stream.on('data', (tweet: Tweet) => {
@@ -35,6 +35,10 @@ module.exports = (robot: Robot<any>) => {
           const text = `${tweet.text} - ${user.name}@${user.screen_name}`
           const url = `http://twitter.com/${user.screen_name}/status/${tweet.id_str}`
           const message = `${text}\n${url}`
+          if (/相互フォロー/.test(user.name)) {
+            // filter @todo bombing error by node
+            return
+          }
           queue.push(message)
         }
       })
